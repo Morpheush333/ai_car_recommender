@@ -1,0 +1,106 @@
+model,type,fuel,price,features
+Tesla Model 3,sedan,electric,40000,"autopilot, long range, fast charging"
+Toyota RAV4 Hybrid,suv,hybrid,32000,"all wheel drive, great mpg"
+Ford F-150,truck,petrol,35000,"towing capacity, rugged"
+Honda Civic,sedan,petrol,25000,"reliable, fuel efficient"
+BMW X5,suv,petrol,60000,"luxury, AWD, sporty"
+BMW X1,coupe,electric,84007,"sporty, fuel efficient, reliable"
+Honda CR-V,suv,petrol,46255,"all wheel drive, towing capacity"
+Toyota Corolla,sedan,electric,39180,"long range, all wheel drive"
+Fiat Tipo,hatchback,hybrid,56284,reliable
+Citroen C3,sedan,hybrid,83972,"fuel efficient, autopilot"
+Volvo S60,coupe,electric,31279,"fast charging, luxury, autopilot"
+Tesla Model Y,sedan,petrol,64316,"autopilot, sporty, long range"
+Fiat Tipo,sedan,petrol,22840,"sporty, long range"
+Tesla Model S,hatchback,hybrid,71364,"autopilot, sporty, all wheel drive"
+Toyota Corolla,suv,hybrid,58266,"AWD, fuel efficient"
+Honda Fit,truck,electric,53037,"fuel efficient, long range, all wheel drive"
+Tesla Model S,hatchback,electric,83630,"all wheel drive, autopilot, luxury"
+Ford Focus,coupe,electric,31062,"AWD, autopilot, towing capacity"
+BMW X1,coupe,electric,17799,"sporty, fuel efficient, AWD"
+Toyota Corolla,truck,petrol,39288,autopilot
+Ford Focus,sedan,diesel,60256,"sporty, fuel efficient, all wheel drive"
+Tesla Model X,hatchback,hybrid,75591,"all wheel drive, luxury, long range"
+Citroen C5 Aircross,hatchback,hybrid,33396,sporty
+Renault Clio,suv,diesel,65015,"fast charging, sporty"
+Renault Captur,truck,petrol,30959,"luxury, long range, towing capacity"
+Toyota Corolla,coupe,petrol,66706,"long range, luxury, fast charging"
+Ford Focus,suv,electric,29010,fast charging
+BMW X1,hatchback,diesel,23363,"autopilot, towing capacity"
+Citroen C4 Cactus,suv,diesel,33169,sporty
+Tesla Model Y,coupe,electric,41373,"sporty, reliable"
+Ford Explorer,hatchback,hybrid,61078,"AWD, fast charging, fuel efficient"
+Tesla Model X,hatchback,diesel,37243,"long range, all wheel drive"
+Honda Fit,sedan,hybrid,77028,"fuel efficient, sporty, long range"
+Fiat Tipo,suv,hybrid,69618,"luxury, fast charging, sporty"
+Ford Focus,truck,diesel,74767,"long range, fast charging, autopilot"
+Toyota Yaris,suv,diesel,32854,"AWD, fast charging"
+Toyota Camry,suv,electric,62533,reliable
+Volvo S60,suv,electric,33011,towing capacity
+Renault Clio,coupe,electric,45284,"fuel efficient, long range, towing capacity"
+Renault Captur,truck,diesel,57861,AWD
+Toyota Yaris,sedan,electric,30069,"autopilot, sporty"
+Volvo XC60,hatchback,hybrid,15128,AWD
+Ford Mustang,hatchback,hybrid,54949,"AWD, fuel efficient, towing capacity"
+Tesla Model Y,truck,hybrid,49127,AWD
+Renault Captur,sedan,petrol,82089,"AWD, all wheel drive, fuel efficient"
+Tesla Model X,hatchback,diesel,39701,"all wheel drive, towing capacity, fuel efficient"
+Tesla Model Y,hatchback,petrol,26648,autopilot
+Fiat Panda,coupe,diesel,15280,fuel efficient
+Honda Fit,suv,hybrid,75590,"all wheel drive, long range, fuel efficient"
+Honda Accord,sedan,electric,33596,sporty
+BMW X1,truck,hybrid,15302,"fuel efficient, AWD"
+Renault Clio,suv,petrol,41853,"autopilot, AWD"
+Citroen C3,suv,hybrid,18688,luxury
+BMW X1,coupe,petrol,27721,fast charging
+BMW X1,truck,diesel,19605,"sporty, luxury, fuel efficient"
+Citroen C5 Aircross,sedan,petrol,52695,"sporty, long range"
+BMW X1,sedan,electric,68416,fast charging
+Ford Focus,suv,electric,85348,"autopilot, all wheel drive"
+Ford Mustang,hatchback,diesel,68415,autopilot
+Toyota Yaris,coupe,diesel,77164,all wheel drive
+Tesla Model Y,coupe,hybrid,78733,"AWD, luxury, autopilot"
+Toyota Corolla,coupe,hybrid,44722,"luxury, sporty"
+Citroen C5 Aircross,hatchback,petrol,82884,"long range, fast charging, sporty"
+Fiat Panda,suv,electric,17242,"autopilot, fuel efficient"
+Volvo S60,coupe,electric,22666,fuel efficient
+Toyota Yaris,suv,petrol,23116,"towing capacity, fuel efficient"
+Toyota Camry,coupe,petrol,33708,"fast charging, all wheel drive"
+Tesla Model Y,suv,diesel,70217,all wheel drive
+Renault Megane,hatchback,diesel,69294,"towing capacity, reliable, autopilot"
+Toyota Corolla,hatchback,hybrid,44712,AWD
+BMW X1,hatchback,electric,87010,long range
+Fiat Panda,hatchback,hybrid,71558,fast charging
+BMW 3 Series,hatchback,diesel,20334,all wheel drive
+Fiat Tipo,suv,petrol,27555,towing capacity
+Renault Clio,truck,diesel,45584,fuel efficient
+BMW X3,hatchback,electric,81663,"sporty, reliable"
+Renault Captur,truck,hybrid,75977,"reliable, all wheel drive, luxury"
+BMW 3 Series,coupe,petrol,60066,"towing capacity, fast charging"
+Honda CR-V,truck,hybrid,87823,"autopilot, towing capacity"
+Honda CR-V,coupe,hybrid,39648,"all wheel drive, sporty"
+Citroen C4 Cactus,hatchback,electric,50066,long range
+Tesla Model X,sedan,electric,35561,"AWD, fast charging, all wheel drive"
+Honda Accord,hatchback,hybrid,79769,"fast charging, reliable"
+Toyota Corolla,suv,hybrid,63332,"sporty, fuel efficient, towing capacity"
+Ford Explorer,sedan,electric,49866,"towing capacity, reliable, AWD"
+Honda Accord,suv,petrol,28475,"reliable, all wheel drive"
+Volvo XC40,coupe,diesel,65369,"sporty, fast charging, long range"
+Renault Clio,coupe,petrol,23259,towing capacity
+Renault Megane,suv,diesel,45455,autopilot
+Ford Mustang,truck,diesel,29113,"fast charging, autopilot, all wheel drive"
+BMW X3,suv,diesel,35913,reliable
+Renault Clio,sedan,hybrid,76109,"AWD, sporty, luxury"
+Fiat 500,truck,hybrid,49490,"all wheel drive, luxury"
+Volvo S60,truck,electric,55667,"sporty, AWD"
+Citroen C3,suv,hybrid,80356,"all wheel drive, autopilot"
+Citroen C4 Cactus,truck,petrol,46971,"luxury, reliable"
+Tesla Model Y,sedan,diesel,67393,"fuel efficient, fast charging"
+Volvo XC40,coupe,petrol,35622,"autopilot, long range, reliable"
+Volvo S60,suv,diesel,22969,"AWD, long range"
+Citroen C3,truck,hybrid,30266,"all wheel drive, reliable, fast charging"
+Volvo XC60,truck,hybrid,67721,"fuel efficient, AWD"
+Volvo S60,sedan,hybrid,50122,"sporty, long range"
+Honda CR-V,suv,hybrid,32972,sporty
+Renault Megane,coupe,electric,88192,"AWD, long range, fuel efficient"
+Renault Clio,truck,hybrid,62379,"AWD, fuel efficient"
