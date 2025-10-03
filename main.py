@@ -17,43 +17,57 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 # ----------------- Initialize OpenAI ---------------------
-# 1. Load environment variables from .env (if exists)
 load_dotenv()
-
-# 2. Get API key from env
 api_key = os.getenv("OPENAI_API_KEY")
-
-# 3. Initialize OpenAI client
 client = OpenAI(api_key=api_key)
 
-# ----------------- Sample Car Dataset ---------------------
-# Replace with real inventory later
+# ----------------- Load Car Dataset ---------------------
 cars = pd.read_csv("cars.csv")
 
-# ----------------- Embed Cars for RAG ---------------------
+# Normalize text columns for consistent filtering
+cars["type"] = cars["type"].str.lower()
+cars["fuel"] = cars["fuel"].str.lower()
+cars["model"] = cars["model"].str.lower()
+cars["features"] = cars["features"].str.lower()
+
+# ----------------- Embedding & FAISS Setup ---------------------
 embedding_model = "text-embedding-3-small"
 embed_dim = 1536
-car_embeddings = []
 
+@st.cache_resource
+def load_faiss_index():
+    if os.path.exists("car_index.faiss") and os.path.exists("car_embeddings.npy"):
+        index = faiss.read_index("car_index.faiss")
+        embeddings = np.load("car_embeddings.npy")
+        return index, embeddings
 
-def get_embedding(text: str, model=embedding_model):
+    # Build texts for all cars
+    car_texts = [
+        f"{row['model']}, Type: {row['type']}, Fuel: {row['fuel']}, "
+        f"Price: {row['price']}, Features: {row['features']}"
+        for _, row in cars.iterrows()
+    ]
+
+    # Batch request embeddings
     response = client.embeddings.create(
-        model=model,
-        input=text
+        model=embedding_model,
+        input=car_texts
     )
-    return response.data[0].embedding
+    car_embeddings = np.array([e.embedding for e in response.data], dtype="float32")
 
+    # Build FAISS index
+    index = faiss.IndexFlatL2(embed_dim)
+    index.add(car_embeddings)
 
-for _, row in cars.iterrows():
-    text = f"{row['model']}, Type: {row['type']}, Fuel: {row['fuel']}, Price: {row['price']}, Features: {row['features']}"
-    emb = get_embedding(text)
-    car_embeddings.append(np.array(emb, dtype="float32"))
+    # Save to disk for reuse
+    faiss.write_index(index, "car_index.faiss")
+    np.save("car_embeddings.npy", car_embeddings)
 
-car_embeddings = np.vstack(car_embeddings)
-faiss_index = faiss.IndexFlatL2(embed_dim)
-faiss_index.add(car_embeddings)
+    return index, car_embeddings
 
-# ----------------- Streamlit App ---------------------
+faiss_index, car_embeddings = load_faiss_index()
+
+# ----------------- Streamlit UI ---------------------
 st.set_page_config(page_title="AI Car Recommender", layout="wide")
 st.title("🚗 Advanced AI Car Recommender")
 
@@ -66,35 +80,39 @@ with st.form("preferences_form"):
     budget = st.number_input("Maximum budget (USD)", min_value=0, step=1000, value=40000)
     car_type = st.selectbox("Car type", ["", "sedan", "suv", "truck"])
     fuel_type = st.selectbox("Fuel type", ["", "petrol", "hybrid", "electric"])
-    features = st.text_input("Specific features (e.g., AWD, autopilot)")
-    brand = st.text_input("Preferred brand")
+    features = st.text_input("Specific features (e.g., AWD, autopilot)").lower()
+    brand = st.text_input("Preferred brand").lower()
     submitted = st.form_submit_button("Find Cars")
 
-
 # ----------------- RAG ---------------------
+def get_embedding(text: str):
+    response = client.embeddings.create(
+        model=embedding_model,
+        input=text
+    )
+    return response.data[0].embedding
+
 def retrieve_cars(preferences, top_k=5):
     query_text = ", ".join(f"{k}: {v}" for k, v in preferences.items() if v)
-    query_emb = get_embedding(query_text, model=embedding_model)
+    query_emb = get_embedding(query_text)
     D, I = faiss_index.search(np.array([query_emb], dtype="float32"), top_k)
 
     retrieved = cars.iloc[I[0]].copy()
 
-    # strict filtering
-    def match(car):
-        if preferences.get("budget") and car["price"] > preferences["budget"]:
-            return False
-        if preferences.get("type") and preferences["type"] not in car["type"].lower():
-            return False
-        if preferences.get("fuel") and preferences["fuel"] not in car["fuel"].lower():
-            return False
-        if preferences.get("brand") and preferences["brand"] not in car["model"].lower():
-            return False
-        if preferences.get("features") and preferences["features"] not in car["features"].lower():
-            return False
-        return True
+    # Strict filtering with vectorized conditions
+    mask = pd.Series(True, index=retrieved.index)
+    if preferences.get("budget"):
+        mask &= retrieved["price"] <= preferences["budget"]
+    if preferences.get("type"):
+        mask &= retrieved["type"].str.contains(preferences["type"])
+    if preferences.get("fuel"):
+        mask &= retrieved["fuel"].str.contains(preferences["fuel"])
+    if preferences.get("brand"):
+        mask &= retrieved["model"].str.contains(preferences["brand"])
+    if preferences.get("features"):
+        mask &= retrieved["features"].str.contains(preferences["features"])
 
-    return retrieved[retrieved.apply(match, axis=1)]
-
+    return retrieved[mask]
 
 def generate_recommendation(preferences, retrieved_cars):
     if retrieved_cars.empty:
@@ -121,15 +139,14 @@ Provide a friendly recommendation with pros and cons for each car, explaining wh
     )
     return response.choices[0].message.content.strip()
 
-
-# ----------------- Display Recommendations ---------------------
+# ----------------- Display Results ---------------------
 if submitted:
     user_prefs = {
         "budget": budget,
-        "type": car_type,
-        "fuel": fuel_type,
-        "features": features.lower(),
-        "brand": brand.lower()
+        "type": car_type.lower(),
+        "fuel": fuel_type.lower(),
+        "features": features,
+        "brand": brand
     }
     retrieved_cars = retrieve_cars(user_prefs)
 
@@ -137,16 +154,14 @@ if submitted:
     if retrieved_cars.empty:
         st.warning("No cars matched your preferences.")
     else:
-        # Side-by-side display
         cols = st.columns(len(retrieved_cars))
         for col, (_, car) in zip(cols, retrieved_cars.iterrows()):
-            col.markdown(f"**{car['model']}**")
-            col.markdown(f"- Type: {car['type']}")
-            col.markdown(f"- Fuel: {car['fuel']}")
-            col.markdown(f"- Price: ${car['price']}")
+            col.markdown(f"**{car['model'].title()}**")
+            col.markdown(f"- Type: {car['type'].title()}")
+            col.markdown(f"- Fuel: {car['fuel'].title()}")
+            col.markdown(f"- Price: ${car['price']:,}")
             col.markdown(f"- Features: {car['features']}")
 
-        # LLM explanation
         st.subheader("AI Recommendations Explanation")
         explanation = generate_recommendation(user_prefs, retrieved_cars)
         st.markdown(explanation)
